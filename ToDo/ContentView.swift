@@ -6,50 +6,63 @@
 //
 
 import SwiftUI
-import _SwiftData_SwiftUI
-
+import SwiftData
 struct ContentView: View {
-    
-    @State private var showNewTask = false
-    @Query var toDos: [ToDoItem]
-    
-    var body: some View {
-        VStack {
-            HStack {
-                Text("To Do List")
-                    .font(.system(size: 35))
-                    .fontWeight(.black)
-                Spacer()
-                Button {
-                    withAnimation{
-                        showNewTask = true
-                    }
-                    
-                } label: {
-                    Text("+")
-                        .font(.title)
-                        .fontWeight(.bold)
-
-                }
-            }
-            .padding()
-            Spacer()
-            
-            List{
-                ForEach(toDos){ toDoItem in
-                    Text(toDoItem.title)
-                    
-                }
-            }
-            
-            if showNewTask {
-                NewToDoView(toDoItem: ToDoItem(title: "", isImportant: false))
-            }
-            
+  @State private var showNewTask = false
+  @Query var toDos: [ToDoItem]
+  var body: some View {
+    VStack {
+      HStack{
+        Text("To-Do List")
+          .font(.system(size: 40))
+          .fontWeight(.bold)
+        Spacer()//push left or right
+        Button{
+          withAnimation{
+            showNewTask = true
+          }
+        } label: {
+          Text("+")
+            .font(.title)
+            .fontWeight(.bold)
+        }
+      }//end of the HStack
+      .padding()
+      Spacer()//push up
+      List{//Displays list of tasks
+        ForEach (toDos) { toDoItem in
+            if toDoItem.isImportant {
+                Text("‼️" + toDoItem.title)
+            } else {
+                Text(toDoItem.title)
             }
         }
+      }
+      .listStyle(.plain)
+    }//end of the VStack
+    if showNewTask {
+      NewToDo(toDoItem: ToDoItem(title: "", isImportant: false))
     }
-
-#Preview {
-    ContentView()
+  }
 }
+#Preview {
+  ContentView()
+        .modelContainer(for: ToDoItem.self, inMemory: true)
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
